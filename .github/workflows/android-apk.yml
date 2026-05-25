@@ -1,9 +1,9 @@
 name: Build Android APK
 
 on:
-  push:
-    branches: [ "main" ]
   workflow_dispatch:
+  push:
+    branches: ["main"]
 
 jobs:
   build:
@@ -17,21 +17,15 @@ jobs:
         uses: actions/setup-java@v4
         with:
           distribution: temurin
-          java-version: '17'
-
-      - name: Set up Android SDK
-        uses: android-actions/setup-android@v3
+          java-version: "17"
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v3
 
-      - name: Generate Gradle wrapper
-        run: gradle wrapper --gradle-version 8.7
+      - name: Build Debug APK (without wrapper)
+        run: gradle :app:assembleDebug --stacktrace
 
-      - name: Build debug APK
-        run: ./gradlew assembleDebug
-
-      - name: Upload APK artifact
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: mazdoor-connect-debug-apk
